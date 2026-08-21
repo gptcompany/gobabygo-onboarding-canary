@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "feature_id": "normalize-whitespace-c4ec8b8bbe33",
+  "repository": "gptcompany/gobabygo-onboarding-canary",
+  "schema": "mesh.speckit.github-ledger.v1"
+}
