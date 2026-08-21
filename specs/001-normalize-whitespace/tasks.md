@@ -31,18 +31,18 @@ plan.md → Structure Decision.
 
 **Purpose**: Establish the package and test scaffolding the repository does not yet have.
 
-- [ ] T001 [P] Add `pyproject.toml` with src-layout packaging and pytest config
+- [x] T001 [P] Add `pyproject.toml` with src-layout packaging and pytest config
   - `[build-system]` with `requires = ["setuptools>=68"]` and `build-backend = "setuptools.build_meta"`.
   - `[project]` with `name = "gobabygo-text"`, `version = "0.1.0"`, `requires-python = ">=3.11"`,
     and an empty `dependencies = []` (no runtime dependencies).
   - `[tool.setuptools.packages.find]` with `where = ["src"]` so the src layout is discovered.
     Do not rely on bare `package-dir` alone; discovery must find `gobabygo_text` under `src/`.
   - `[tool.pytest.ini_options]` with `testpaths = ["tests"]`.
-- [ ] T002 Create the `gobabygo_text` package skeleton and `tests/unit/` directory
+- [x] T002 Create the `gobabygo_text` package skeleton and `tests/unit/` directory
   - `src/gobabygo_text/__init__.py` does `from gobabygo_text.whitespace import normalize_whitespace`
     and defines `__all__ = ["normalize_whitespace"]`.
   - Do **not** create `src/gobabygo_text/whitespace.py` here — its absence is what makes Phase 3 fail RED.
-- [ ] T003 [P] Add `.github/workflows/ci.yml` running pytest with 100% coverage gate
+- [x] T003 [P] Add `.github/workflows/ci.yml` running pytest with 100% coverage gate
   - Trigger on `push` and `pull_request`; matrix over Python 3.11 and 3.14.
   - Steps: checkout, setup-python, `python -m pip install -e .`, install `pytest` and `pytest-cov`,
     then `python -m pytest -v --cov=gobabygo_text --cov-report=term-missing --cov-fail-under=100`.
@@ -67,7 +67,7 @@ one space and both ends stripped.
 
 **Independent test**: `normalize_whitespace("  hello \t\n  world  ") == "hello world"`.
 
-- [ ] T004 [US1] Write RED tests for collapsing and stripping ASCII whitespace
+- [x] T004 [US1] Write RED tests for collapsing and stripping ASCII whitespace
   - In `tests/unit/test_whitespace.py`, cover US1 acceptance scenarios 1-5 from spec.md.
   - Cover the plan.md edge cases: mixed runs `"\t \n\r"` collapse to one space; a lone `"\t"`
     between words becomes `" "`; leading/trailing runs are removed entirely, not collapsed to one space.
@@ -85,7 +85,7 @@ one space and both ends stripped.
 
 **Independent test**: `pytest.raises(TypeError)` around `normalize_whitespace(None)`.
 
-- [ ] T005 [US2] Write RED tests for TypeError on non-string input
+- [x] T005 [US2] Write RED tests for TypeError on non-string input
   - Cover US2 acceptance scenarios 1-5 in the same file: `None`, `42`, `b"hello"` and `True`
     each raise `TypeError` (SC-004).
   - Assert the raised message contains `type(value).__name__` for each case (FR-007).
@@ -100,7 +100,7 @@ one space and both ends stripped.
 
 **Independent test**: `normalize_whitespace("a\xa0b") == "a\xa0b"`.
 
-- [ ] T006 [US3] Write RED tests for non-ASCII whitespace preservation
+- [x] T006 [US3] Write RED tests for non-ASCII whitespace preservation
   - Cover US3 acceptance scenarios 1-4 (SC-003): `"a\xa0b"`, `"\xa0a\xa0"`, `"a \xa0 b"`
     and `"a\u3000\u3000b"` each round trip unchanged.
   - Write these characters as `\xa0` / `\u3000` escapes, never as literal glyphs, so no encoding
@@ -118,7 +118,7 @@ evidence for `TDD_MODE: required` and must be captured before Phase 6 begins.
 
 **Goal**: The minimum production code that turns the whole RED suite green.
 
-- [ ] T007 Implement `normalize_whitespace` in `src/gobabygo_text/whitespace.py` (GREEN)
+- [x] T007 Implement `normalize_whitespace` in `src/gobabygo_text/whitespace.py` (GREEN)
   - Implement exactly as specified in `contracts/normalize_whitespace.md`.
   - Module level: `_ASCII_WHITESPACE = " \t\n\r\v\f"` and
     `_ASCII_WHITESPACE_RUN = re.compile(r"[ \t\n\r\v\f]+")`.
@@ -135,14 +135,14 @@ evidence for `TDD_MODE: required` and must be captured before Phase 6 begins.
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T008 Add a linear-time performance assertion for a 1,000,000-character input
+- [x] T008 Add a linear-time performance assertion for a 1,000,000-character input
   - In `tests/unit/test_whitespace.py`, build a 1,000,000-character whitespace-heavy input (SC-006).
   - Assert both the exact expected result and that the call completes in under one second,
     measured with `time.perf_counter`.
-- [ ] T009 Verify 100% line coverage of `src/gobabygo_text/`
+- [x] T009 Verify 100% line coverage of `src/gobabygo_text/`
   - Run `python3 -m pytest --cov=gobabygo_text --cov-report=term-missing --cov-fail-under=100`
     and confirm SC-005 is met.
-- [ ] T010 [P] Document `normalize_whitespace` usage in `README.md`
+- [x] T010 [P] Document `normalize_whitespace` usage in `README.md`
   - Add a short usage section linking to `specs/001-normalize-whitespace/quickstart.md`.
   - Include the U+00A0 preservation caveat so callers are not surprised.
 
