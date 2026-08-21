@@ -21,6 +21,10 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e .
           python -m pip install pytest pytest-cov
+      - name: Verify installed package is importable
+        working-directory: /tmp
+        run: |
+          python -c "import gobabygo_text; print(gobabygo_text.normalize_whitespace('  a  b  '))"
       - name: Run test suite with coverage
         run: |
           python -m pytest -v --cov=gobabygo_text --cov-report=term-missing --cov-fail-under=100
