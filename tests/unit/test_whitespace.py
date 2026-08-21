@@ -182,5 +182,3 @@ class TestNormalizeWhitespacePerformance:
         # load spikes on shared CI runners, while still failing by orders of magnitude if a
         # super-linear (e.g. quadratic) algorithmic regression is introduced.
         assert duration < 5.0, f"Expected < 5.0s, took {duration:.4f}s"
-
-
